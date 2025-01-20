@@ -57,11 +57,11 @@ export const TestimonialContent = ({
 
   return (
     <>
-      <div className="space-y-2">
+      <div className="space-y-2 w-full">
         <StarRating rating={rating} onChange={onRatingChange} />
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 w-full">
         <Label htmlFor="tag" className="after:content-['*'] after:ml-0.5 after:text-red-500">
           What product did you use?
         </Label>
@@ -70,7 +70,7 @@ export const TestimonialContent = ({
           onValueChange={onTagChange} 
           required
         >
-          <SelectTrigger>
+          <SelectTrigger className="w-full">
             <SelectValue placeholder="Please select..." className="text-gray-400" />
           </SelectTrigger>
           <SelectContent>
@@ -83,7 +83,7 @@ export const TestimonialContent = ({
         </Select>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-2 w-full">
         <Label htmlFor="testimonial" className="after:content-['*'] after:ml-0.5 after:text-red-500">
           Your testimonial
         </Label>
@@ -95,7 +95,7 @@ export const TestimonialContent = ({
           value={text}
           onChange={(e) => handleTextChange(e.target.value)}
           placeholder="Share your experience..."
-          className="min-h-[150px]"
+          className="min-h-[150px] w-full resize-none"
           required
           maxLength={MAX_CHARS}
         />

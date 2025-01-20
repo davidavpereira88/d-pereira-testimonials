@@ -7,12 +7,16 @@ interface TestimonialListProps {
   testimonials: Testimonial[];
   hasNextPage?: boolean;
   fetchNextPage?: () => void;
+  onTagClick?: (tag: string) => void;
+  selectedTag?: string | null;
 }
 
 export const TestimonialList = ({ 
   testimonials,
   hasNextPage,
-  fetchNextPage 
+  fetchNextPage,
+  onTagClick,
+  selectedTag
 }: TestimonialListProps) => {
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(loadMoreRef);
@@ -41,7 +45,11 @@ export const TestimonialList = ({
           .filter((t: Testimonial) => t.approved)
           .map((testimonial: Testimonial) => (
             <div key={testimonial.id} className="mb-6">
-              <TestimonialCard testimonial={testimonial} />
+              <TestimonialCard 
+                testimonial={testimonial} 
+                onTagClick={onTagClick}
+                selectedTag={selectedTag}
+              />
             </div>
           ))}
       </Masonry>

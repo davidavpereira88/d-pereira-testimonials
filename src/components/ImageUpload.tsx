@@ -64,9 +64,9 @@ export const ImageUpload = ({
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <Avatar className="w-20 h-20">
+    <div className="space-y-4 w-full">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <Avatar className="w-20 h-20 shrink-0">
           <AvatarImage
             src={initialImage || undefined}
             alt={userName}
@@ -80,12 +80,13 @@ export const ImageUpload = ({
           </AvatarFallback>
         </Avatar>
 
-        <div className="flex-1">
+        <div className="w-full">
           <input
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            className="file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:rounded-md file:bg-zinc-500 file:text-white hover:file:bg-zinc-600 file:transition-colors"
+            disabled={uploading}
+            className="w-full max-w-full file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-medium file:rounded-md file:bg-zinc-500 file:text-white hover:file:bg-zinc-600 file:transition-colors"
           />
         </div>
       </div>

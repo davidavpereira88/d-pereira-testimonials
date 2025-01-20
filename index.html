@@ -3,19 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title id="metaTitle"></title>
-    <meta name="description" id="metaDescription" content="" />
-    <meta name="author" id="metaAuthor" content="" />
+    <title>%VITE_META_TITLE%</title>
+    <meta name="description" content="%VITE_META_DESCRIPTION%" />
+    <meta name="author" content="%VITE_META_AUTHOR%" />
     <meta property="og:image" id="ogImage" content="/og-image.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="" />
     <link rel="icon" type="image/png" sizes="16x16" href="" />
     <link rel="apple-touch-icon" sizes="180x180" href="" />
     <script type="module">
-      // Set meta title, description and author from environment variables
-      document.getElementById('metaTitle').textContent = import.meta.env.VITE_META_TITLE;
-      document.getElementById('metaDescription').content = import.meta.env.VITE_META_DESCRIPTION;
-      document.getElementById('metaAuthor').content = import.meta.env.VITE_META_AUTHOR;
-
       // Get environment variables
       const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
       const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;

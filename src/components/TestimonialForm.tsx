@@ -23,7 +23,7 @@ export const TestimonialForm = ({
 }: TestimonialFormProps) => {
   console.log("Initializing TestimonialForm with data:", initialData);
   
-  const { formData, handleInputChange, getSubmissionData, isFormValid } = useTestimonialForm(initialData);
+  const { formData, handleInputChange, getSubmissionData, isFormValid } = useTestimonialForm(initialData, isAdmin);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -11,7 +11,7 @@ interface FormData {
   photo: string | null;
 }
 
-export const useTestimonialForm = (initialData?: any) => {
+export const useTestimonialForm = (initialData?: any, isAdmin: boolean = false) => {
   const [formData, setFormData] = useState<FormData>({
     rating: initialData?.rating || 5,
     text: initialData?.text || "",
@@ -26,14 +26,16 @@ export const useTestimonialForm = (initialData?: any) => {
   console.log("Initial form data state:", formData);
 
   const isFormValid = useMemo(() => {
-    return Boolean(
-      formData.text &&
-      formData.name &&
-      formData.email &&
-      formData.tag &&
-      formData.permission
-    );
-  }, [formData]);
+    const requiredFields = {
+      text: Boolean(formData.text),
+      name: Boolean(formData.name),
+      email: Boolean(formData.email),
+      tag: Boolean(formData.tag),
+      permission: isAdmin ? true : formData.permission // Skip permission check for admin
+    };
+
+    return Object.values(requiredFields).every(Boolean);
+  }, [formData, isAdmin]);
 
   const getSubmissionData = () => {
     console.log("Getting submission data from form:", formData);

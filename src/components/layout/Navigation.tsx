@@ -14,9 +14,9 @@ export const Navigation = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { data: branding } = useBranding();
-  const primaryColor = branding?.primary_color || '#2e75a9'; // Fallback color
+  const primaryColor = branding?.primary_color || '#2e75a9';
 
-  const { data: userRole } = useQuery({
+  const { data: userRole, isLoading: isRoleLoading } = useQuery({
     queryKey: ["userRole", user?.id],
     queryFn: async () => {
       if (!user) return null;
@@ -33,8 +33,7 @@ export const Navigation = () => {
   const handleSignOut = async () => {
     try {
       await signOut();
-      navigate('/');
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error signing out:', error);
       toast({
         variant: "destructive",
@@ -44,8 +43,8 @@ export const Navigation = () => {
     }
   };
 
-  // Hide navigation for non-authenticated users or those on the login page
-  if (!user || location.pathname === "/login") {
+  // Hide navigation on login and embed pages, or if there's no authenticated user
+  if (!user || location.pathname === '/login' || location.pathname === '/embed' || isRoleLoading) {
     return null;
   }
 
@@ -90,11 +89,9 @@ export const Navigation = () => {
             )}
           </div>
           <div className="flex items-center space-x-4">
-            {user && (
-              <Button variant="outline" onClick={handleSignOut}>
-                Sign Out
-              </Button>
-            )}
+            <Button variant="outline" onClick={handleSignOut}>
+              Sign Out
+            </Button>
           </div>
         </div>
       </div>

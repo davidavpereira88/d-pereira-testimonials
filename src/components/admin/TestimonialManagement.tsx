@@ -8,13 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TestimonialCard, type Testimonial } from "@/components/TestimonialCard";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { TestimonialForm } from "@/components/TestimonialForm";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { convertDbTestimonialToTestimonial } from "@/utils/testimonialUtils";
-import { AVAILABLE_TAGS } from "@/constants/testimonials";
 
 export const TestimonialManagement = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -25,8 +24,8 @@ export const TestimonialManagement = () => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data: testimonials = [], isLoading } = useQuery({
-    queryKey: ["testimonials", "admin"],
+  const { data: testimonials = [], isLoading: isLoadingTestimonials } = useQuery({
+    queryKey: ["admin", "testimonials"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("testimonials")
@@ -35,6 +34,19 @@ export const TestimonialManagement = () => {
 
       if (error) throw error;
       return data?.map(convertDbTestimonialToTestimonial) || [];
+    },
+  });
+
+  const { data: tagNames = [], isLoading: isLoadingTags } = useQuery({
+    queryKey: ["admin", "tags", "list"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("tags")
+        .select("name")
+        .order("name");
+
+      if (error) throw error;
+      return data?.map(tag => tag.name) || [];
     },
   });
 
@@ -146,7 +158,7 @@ export const TestimonialManagement = () => {
     return matchesSearch && matchesTag;
   });
 
-  if (isLoading) {
+  if (isLoadingTestimonials || isLoadingTags) {
     return <div>Loading...</div>;
   }
 
@@ -164,10 +176,10 @@ export const TestimonialManagement = () => {
             <SelectValue placeholder="Select tag" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Tags</SelectItem>
-            {AVAILABLE_TAGS.map((tag) => (
-              <SelectItem key={tag} value={tag}>
-                {tag}
+            <SelectItem value="all">All categories</SelectItem>
+            {tagNames.map((tagName) => (
+              <SelectItem key={tagName} value={tagName}>
+                {tagName}
               </SelectItem>
             ))}
           </SelectContent>
@@ -195,8 +207,7 @@ export const TestimonialManagement = () => {
         open={!!editingTestimonial}
         onOpenChange={() => setEditingTestimonial(null)}
       >
-        <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-          <DialogTitle>Edit Testimonial</DialogTitle>
+        <DialogContent className="sm:max-w-[600px] w-[95vw] max-h-[90vh] overflow-y-auto p-4 sm:p-6">
           {editingTestimonial && (
             <TestimonialForm
               initialData={editingTestimonial}

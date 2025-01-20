@@ -14,32 +14,44 @@ const queryClient = new QueryClient();
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Index />,
+    element: (
+      <AuthProvider>
+        <Index />
+      </AuthProvider>
+    ),
   },
   {
     path: "/admin",
     element: (
-      <AdminRoute>
-        <Admin />
-      </AdminRoute>
+      <AuthProvider>
+        <AdminRoute>
+          <Admin />
+        </AdminRoute>
+      </AuthProvider>
     ),
   },
   {
     path: "/login",
-    element: <Login />,
+    element: (
+      <AuthProvider>
+        <Login />
+      </AuthProvider>
+    ),
   },
   {
     path: "/embed",
-    element: <Embed />,
+    element: (
+      <AuthProvider>
+        <Embed />
+      </AuthProvider>
+    ),
   },
 ]);
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <RouterProvider router={router} />
     </QueryClientProvider>
   );
 };
